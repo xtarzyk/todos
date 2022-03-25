@@ -2,12 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <script src="https://kit.fontawesome.com/f4d54669b9.js" crossorigin="anonymous"></script>
+    <title>TODO App</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="app">
+      <div class="header">
+        <div class="header__title">
+          <h1>TODO App</h1>
+        </div>
+        <div class="header__interface">
+          <input class="header__input" type="text" placeholder="Add task...">
+          <button class="header__button">Add task</button>
+        </div>
+      </div>
+      <div class="main">
+        <h2 class="main__title">Your tasks:</h2>
+        <ul class="main__list"></ul>
+      </div>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

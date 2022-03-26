@@ -5,7 +5,7 @@ body {
   background: #023047;
   display: flex;
   justify-content: center;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Comic Sans MS", sans-serif;
 }
 
 .app {
@@ -26,6 +26,19 @@ body {
   align-items: center;
   color: white;
   margin: 20px;
+}
+.header__title {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: white;
+}
+.header__title h1 {
+  margin: 0;
+  font-size: 40px;
+}
+.header__title h2 {
+  margin-top: 0;
 }
 .header__interface {
   margin: 10px;
@@ -54,6 +67,7 @@ body {
 
 .list-item {
   align-items: center;
+  justify-content: space-evenly;
 }
 .list-item__li-tag {
   list-style-type: none;
@@ -61,9 +75,11 @@ body {
   padding: 8px;
   margin: 10px;
   background: #ffb703;
+  color: #023047;
 }
 
-.fa-trash-can {
+i {
+  margin-left: 15px;
   color: #ffb703;
   font-size: 25px;
   cursor: pointer;

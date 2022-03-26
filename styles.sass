@@ -5,7 +5,7 @@ body
   background: #023047
   display: flex
   justify-content: center
-  font-family: Avenir, Helvetica, Arial, sans-serif
+  font-family: "Comic Sans MS", sans-serif
 
 .app
   display: flex
@@ -24,6 +24,21 @@ body
   align-items: center
   color: white
   margin: 20px
+
+  &__title
+    display: flex
+    flex-direction: column
+    text-align: center
+    color: white
+    //background-color: #ffb703
+    //width: 200px
+
+    & h1
+      margin: 0
+      font-size: 40px
+
+    & h2
+      margin-top: 0
 
   &__interface
     margin: 10px
@@ -51,6 +66,7 @@ body
 
 .list-item
   align-items: center
+  justify-content: space-evenly
 
   &__li-tag
     list-style-type: none
@@ -58,9 +74,11 @@ body
     padding: 8px
     margin: 10px
     background: #ffb703
+    color: #023047
 
 
-.fa-trash-can
+i
+  margin-left: 15px
   color: #ffb703
   font-size: 25px
   cursor: pointer

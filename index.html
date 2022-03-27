@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8"/>
+    <!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">-->
     <link rel="stylesheet" href="styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="https://kit.fontawesome.com/f4d54669b9.js" crossorigin="anonymous"></script>
     <title>TODO App</title>
-  </head>
-  <body>
-    <div class="app">
-      <div class="header">
+</head>
+<body>
+<div class="app">
+    <div class="header">
         <div class="header__title">
-          <h1>TODO</h1>
-          <h2>App</h2>
+            <h1>TODO</h1>
+            <h2>App</h2>
         </div>
         <div class="header__interface">
-          <input class="header__input" type="text" placeholder="Add task...">
-          <button class="header__button">Add task</button>
+            <input class="header__input" type="text" placeholder="Add task...">
+            <button class="header__button">Add task</button>
         </div>
-      </div>
-      <div class="main">
-        <h2 class="main__title">Your tasks:</h2>
-        <ul class="main__list"></ul>
-      </div>
     </div>
-    <script type="module" src="/main.js"></script>
-  </body>
+    <div class="main">
+        <h2 class="main__title">Your tasks:</h2>
+        <p class="main__filters-title">Show:</p>
+        <div class="main__filter-btns">
+            <div class="filter-btns__all">
+                <input type="radio" name="filter" id="all">
+                <label for="all">All</label>
+            </div>
+            <div class="filter-btns__todo">
+                <input type="radio" name="filter" id="todo">
+                <label for="todo">TODO</label>
+            </div>
+            <div class="filter-btns__stroke-out">
+                <input type="radio" name="filter" id="strokes">
+                <label for="strokes">Stroke Out</label>
+            </div>
+        </div>
+        <ul class="main__list"></ul>
+    </div>
+</div>
+<script type="module" src="/main.js"></script>
+</body>
 </html>

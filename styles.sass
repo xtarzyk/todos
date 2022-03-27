@@ -48,37 +48,52 @@ body
     padding: 5px
 
   &__button
-    color: white
+    color: #023047
     border: none
-    border-radius: 5px
+    border-radius: 2px
     background: #ffb703
 
 .main
   flex-direction: column
-  align-items: center
+  align-items: flex-start
   color: white
   background: #8ecae6
   border-radius: 5px
 
+  &__title
+    margin-left: 15px
+
   &__list
     padding: 0
+    width: 100%
+
+  &__filters-title
+    margin-left: 15px
+
+  &__filter-btns
+    margin-bottom: 20px
+    display: flex
+    justify-content: space-around
+    width: 100%
+
 
 
 .list-item
   align-items: center
-  justify-content: space-evenly
+  justify-content: space-between
 
   &__li-tag
     list-style-type: none
     max-width: 200px
     padding: 8px
-    margin: 10px
+    margin: 10px 15px
     background: #ffb703
     color: #023047
+    border-radius: 2px
 
 
 i
-  margin-left: 15px
+  margin: 10px
   color: #023047
   font-size: 25px
   cursor: pointer

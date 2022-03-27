@@ -25,8 +25,6 @@ function editListItem(event) {
     taskName.addEventListener('change', e => {
         li.textContent = e.target.value
     })
-    mainList.removeEventListener('click', handleChange)
-    taskName.removeEventListener('change', editListItem)
 }
 
 function handleChange(event) {
@@ -39,7 +37,6 @@ function handleChange(event) {
     if (event.target.className === 'fa-solid fa-trash-can') {
         event.target.parentNode.parentNode.remove()
     }
-    mainList.removeEventListener('click', handleChange)
 }
 
 

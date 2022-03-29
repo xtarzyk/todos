@@ -99,4 +99,22 @@ i {
   cursor: pointer;
 }
 
+.edited-list-item {
+  align-items: center;
+  justify-content: center;
+}
+.edited-list-item__li-tag {
+  list-style-type: none;
+  max-width: 100%;
+  padding: 8px;
+  margin: 10px 15px;
+  background: #ffb703;
+  color: #023047;
+  border-radius: 2px;
+}
+.edited-list-item__li-tag input {
+  margin: 10px;
+  max-width: 100%;
+}
+
 /*# sourceMappingURL=styles.css.map */

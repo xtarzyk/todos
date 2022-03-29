@@ -31,8 +31,12 @@ const createTask = () => {
 
 const createNewListItem = id => {
     const newListItem = document.createElement('li')
-    newListItem.addEventListener('click', event => strikeOut(event, id))
 
+    newListItem.addEventListener('click', event => {
+        if (newListItem.textContent !== "") {
+            strikeOut(event, id)
+        }
+    })
     return newListItem
 }
 
@@ -61,8 +65,15 @@ const createSpanBtns = id => {
         todos = todos.filter(element => element.id === id)
     })
     pencilIcon.addEventListener('click', event => {
-        // span.style.display = 'none'
-        event.stopPropagation()
+        const currentDiv = event.target.parentNode.parentNode
+        const currentListItem = event.target.parentNode.previousSibling
+
+        currentDiv.classList.remove('list-item')
+        currentListItem.classList.remove('list-item__li-tag')
+        currentDiv.classList.add('edited-list-item')
+        currentListItem.classList.add('edited-list-item__li-tag')
+
+        span.style.display = 'none'
         editListItem(event, id)
     })
     span.append(pencilIcon, trashIcon)
@@ -71,13 +82,15 @@ const createSpanBtns = id => {
 
 const editListItem = (event, id) => {
     const li = event.target.parentNode.previousSibling
+    const div = li.parentNode
     const editionInput = document.createElement('input')
+    const span = event.target.parentNode
+
     li.textContent = ''
     editionInput.classList.add('edition-input')
     li.appendChild(editionInput)
-    editionInput.addEventListener('change', editionEvent => {
-        editionEvent.stopPropagation()
 
+    editionInput.addEventListener('change', editionEvent => {
         li.textContent = editionEvent.target.value
         todos = todos.map(todo => {
             if (id === todo.id) {
@@ -86,8 +99,12 @@ const editListItem = (event, id) => {
             }
             return todo
         })
+        div.classList.remove('edited-list-item')
+        li.classList.remove('edited-list-item__li-tag')
+        div.classList.add('list-item')
+        li.classList.add('list-item__li-tag')
+        span.style.display = 'block'
     })
-
 }
 
 

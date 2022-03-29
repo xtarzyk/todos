@@ -34,19 +34,29 @@ const createNewListItem = id => {
 
     newListItem.addEventListener('click', event => {
         if (newListItem.textContent !== "") {
-            strikeOut(event, id)
+            strikeOutAndReverse(event, id)
         }
     })
     return newListItem
 }
 
 
-const strikeOut = (event, id) => {
-    event.target.style.textDecoration = 'line-through'
+const strikeOutAndReverse = (event, id) => {
+    const editIcon = event.target.nextSibling.firstChild
+    if (event.target.style.textDecoration === 'line-through') {
+        event.target.style.textDecoration = 'none'
+        editIcon.style.display = 'inline-block'
+    } else {
+        event.target.style.textDecoration = 'line-through'
+        editIcon.style.display = 'none'
+    }
+
     todos = todos.map(todo => {
         if (id === todo.id) {
-            todo.isDone = true
-            return todo
+            return {
+                ...todo,
+                isDone: !todo.isDone,
+            }
         }
         return todo
     })
@@ -62,7 +72,8 @@ const createSpanBtns = id => {
 
     trashIcon.addEventListener('click', event => {
         event.target.parentNode.parentNode.remove()
-        todos = todos.filter(element => element.id === id)
+        todos = todos.filter(element => element.id !== id)
+        console.log(todos)
     })
     pencilIcon.addEventListener('click', event => {
         const currentDiv = event.target.parentNode.parentNode
@@ -109,11 +120,33 @@ const editListItem = (event, id) => {
 
 
 const filterList = event => {
-    const currentNodeList = document.querySelectorAll('.list-item__li-tag')
-    const currentList = Array.from(currentNodeList)
+    const currentNodeList = document.querySelectorAll('.list-item')
+    const finishedTasksList = todos.filter(todo => todo.isDone)
+    const finishedId = finishedTasksList.map(task => task.id)
+    console.log(finishedId)
+    console.log(finishedTasksList)
+    console.log(currentNodeList)
+
     if (event.target.id === 'todo') {
-        let noLineList = currentList.filter(li => li.style.textDecoration !== 'line-through')
-        console.log(noLineList)
+        currentNodeList.forEach(div => {
+            if (finishedId.includes(div.getAttribute('todo-id'))) {
+                div.style.display = 'none'
+            } else {
+                div.style.display = 'flex'
+            }
+        })
+    }
+    if (event.target.id === 'strokes') {
+        currentNodeList.forEach(div => {
+            if (!finishedId.includes(div.getAttribute('todo-id'))) {
+                div.style.display = 'none'
+            } else {
+                div.style.display = 'flex'
+            }
+        })
+    }
+    if (event.target.id === 'all') {
+        currentNodeList.forEach(div => div.style.display = 'flex')
     }
 }
 

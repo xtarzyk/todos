@@ -22,11 +22,9 @@ const createTask = () => {
         isDone: false,
         id: newId
     })
-    newDiv.setAttribute("todo-id", newId.toString())
+    newDiv.setAttribute("todo-id", newId)
     mainList.append(newDiv)
     taskName.value = ""
-    console.log(todos)
-    console.log(newDiv)
 }
 
 const createNewListItem = id => {
@@ -67,13 +65,12 @@ const createSpanBtns = id => {
     const trashIcon = document.createElement('i')
     const pencilIcon = document.createElement('i')
 
-    trashIcon.classList.add("fa-solid", "fa-trash-can")
-    pencilIcon.classList.add("fa-solid", "fa-pencil")
+    trashIcon.classList.add('fa-solid', 'fa-trash-can')
+    pencilIcon.classList.add('fa-solid', 'fa-pencil')
 
     trashIcon.addEventListener('click', event => {
         event.target.parentNode.parentNode.remove()
         todos = todos.filter(element => element.id !== id)
-        console.log(todos)
     })
     pencilIcon.addEventListener('click', event => {
         const currentDiv = event.target.parentNode.parentNode
@@ -123,9 +120,6 @@ const filterList = event => {
     const currentNodeList = document.querySelectorAll('.list-item')
     const finishedTasksList = todos.filter(todo => todo.isDone)
     const finishedId = finishedTasksList.map(task => task.id)
-    console.log(finishedId)
-    console.log(finishedTasksList)
-    console.log(currentNodeList)
 
     if (event.target.id === 'todo') {
         currentNodeList.forEach(div => {

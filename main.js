@@ -1,12 +1,15 @@
+import { Todo } from './todo'
+
 const addTaskButton = document.querySelector('.header__button')
 const taskName = document.querySelector('.header__input')
 const mainList = document.querySelector('.main__list')
 const radioBtns = document.querySelectorAll('input[name="filter"]')
 let todos = []
+const todo = new Todo
 
 
 const createTask = () => {
-    const newId = Date.now().toString()
+    const newId = todo.getId() /*Date.now().toString()*/
     const newDiv = document.createElement('div')
     const newListItem = createNewListItem(newId)
     const newSpan = createSpanBtns(newId)
@@ -17,11 +20,13 @@ const createTask = () => {
 
     newDiv.append(newListItem)
     newDiv.append(newSpan)
-    todos = todos.concat({
-        text: taskName.value,
-        isDone: false,
-        id: newId
-    })
+    todos = todos.concat(todo)
+    // {
+        // text: taskName.value,
+        // isDone: false,
+        // id: newId
+    // }
+    // )
     newDiv.setAttribute("todo-id", newId)
     mainList.append(newDiv)
     taskName.value = ""

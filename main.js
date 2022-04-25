@@ -8,7 +8,7 @@ let todos = []
 
 const createTask = () => {
     const todo = new Todo(taskName.value)
-    const newTodo = todo.render(strikeOutAndReverse, deleteItem, editListItem)
+    const newTodo = todo.render(strikeOutAndReverse, deleteItem, editItem)
 
     todos = todos.concat(todo)
     mainList.append(newTodo)
@@ -26,18 +26,27 @@ const strikeOutAndReverse = (editIcon, textNode) => {
         editIcon.style.display = 'none'
 }
 
-const deleteItem = (trashIcon, id) => {
-    trashIcon.addEventListener('click', event => {
-        event.target.parentNode.parentNode.remove()
+const deleteItem = (trashIcon, id, parentDiv) => {
+    trashIcon.addEventListener('click', () => {
+        parentDiv.remove()
         todos = todos.filter(element => element.getId() !== id)
     })
 }
 
-const editListItem = (event, id) => {
-    const li = event.target.parentNode.previousSibling
-    const div = li.parentNode
+const editItem = (pencilIcon, id, parentDiv, currentListItem, span) => {
+    pencilIcon.addEventListener('click', () => {
+        parentDiv.classList.remove('list-item')
+        currentListItem.classList.remove('list-item__li-tag')
+        parentDiv.classList.add('edited-list-item')
+        currentListItem.classList.add('edited-list-item__li-tag')
+
+        span.style.display = 'none'
+        changeListItem(id, parentDiv, currentListItem, span)
+    })
+}
+
+const changeListItem = (id, parentDiv, li, span) => {
     const editionInput = document.createElement('input')
-    const span = event.target.parentNode
 
     li.textContent = ''
     editionInput.classList.add('edition-input')
@@ -54,9 +63,9 @@ const editListItem = (event, id) => {
 
             return todo
         })
-        div.classList.remove('edited-list-item')
+        parentDiv.classList.remove('edited-list-item')
         li.classList.remove('edited-list-item__li-tag')
-        div.classList.add('list-item')
+        parentDiv.classList.add('list-item')
         li.classList.add('list-item__li-tag')
         span.style.display = 'block'
     })
@@ -102,7 +111,3 @@ addTaskButton.addEventListener('click', createTask)
 radioBtns.forEach(btn => {
     btn.addEventListener('change', event => filterList(event))
 })
-
-
-
-

@@ -28,10 +28,10 @@ export class Todo {
         this.#text = value
     }
 
-    render(onClick, deleteItem, editListItem) {
+    render(onClick, deleteItem, editItem) {
         const newDiv = document.createElement('div')
         const newListItem = this.#createNewListItem(onClick)
-        const newSpan = this.#createSpanBtns(deleteItem, editListItem)
+        const newSpan = this.#createSpanBtns(deleteItem, editItem, newDiv, newListItem)
 
         newDiv.classList.add('list-item')
         newDiv.setAttribute('todo-id', this.#id)
@@ -46,7 +46,7 @@ export class Todo {
     #createNewListItem(onClick) {
         const newListItem = document.createElement('li')
 
-        newListItem.addEventListener('click', event => {
+        newListItem.addEventListener('click', () => {
             if (newListItem.textContent !== '') {
                 onClick(this.#editIcon, newListItem)
                 this.toggleIsDone()
@@ -56,7 +56,7 @@ export class Todo {
         return newListItem
     }
 
-    #createSpanBtns(deleteItem, editListItem) {
+    #createSpanBtns(deleteItem, editItem, parentDiv, currentListItem) {
         const span = document.createElement('span')
         const trashIcon = document.createElement('i')
         const pencilIcon = document.createElement('i')
@@ -64,20 +64,9 @@ export class Todo {
         trashIcon.classList.add('fa-solid', 'fa-trash-can')
         pencilIcon.classList.add('fa-solid', 'fa-pencil')
     
-        deleteItem(trashIcon, this.#id)
+        deleteItem(trashIcon, this.#id, parentDiv)
     
-        pencilIcon.addEventListener('click', event => {
-            const currentDiv = event.target.parentNode.parentNode
-            const currentListItem = event.target.parentNode.previousSibling
-    
-            currentDiv.classList.remove('list-item')
-            currentListItem.classList.remove('list-item__li-tag')
-            currentDiv.classList.add('edited-list-item')
-            currentListItem.classList.add('edited-list-item__li-tag')
-    
-            span.style.display = 'none'
-            editListItem(event, this.#id)
-        })
+        editItem(pencilIcon, this.#id, parentDiv, currentListItem, span)
     
         span.append(pencilIcon, trashIcon)
         this.#editIcon = pencilIcon

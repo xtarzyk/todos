@@ -1,101 +1,54 @@
+import { Todo } from './todo'
+
 const addTaskButton = document.querySelector('.header__button')
 const taskName = document.querySelector('.header__input')
 const mainList = document.querySelector('.main__list')
-const radioBtns = document.querySelectorAll('input[name="filter"]')
+const radioAll =  document.getElementById('all')
+const radioTodo =  document.getElementById('todo')
+const radioStrokes =  document.getElementById('strokes')
 let todos = []
 
-
 const createTask = () => {
-    const newId = Date.now().toString()
-    const newDiv = document.createElement('div')
-    const newListItem = createNewListItem(newId)
-    const newSpan = createSpanBtns(newId)
+    const todo = new Todo(taskName.value)
+    const newTodo = todo.render(strikeOutAndReverse, deleteItem, editItem)
 
-    newDiv.classList.add('list-item')
-    newListItem.classList.add('list-item__li-tag')
-    newListItem.textContent = taskName.value
-
-    newDiv.append(newListItem)
-    newDiv.append(newSpan)
-    todos = todos.concat({
-        text: taskName.value,
-        isDone: false,
-        id: newId
-    })
-    newDiv.setAttribute("todo-id", newId.toString())
-    mainList.append(newDiv)
-    taskName.value = ""
-    console.log(todos)
-    console.log(newDiv)
+    todos = todos.concat(todo)
+    mainList.append(newTodo)
+    taskName.value = ''
 }
 
-const createNewListItem = id => {
-    const newListItem = document.createElement('li')
-
-    newListItem.addEventListener('click', event => {
-        if (newListItem.textContent !== "") {
-            strikeOutAndReverse(event, id)
-        }
-    })
-    return newListItem
-}
-
-
-const strikeOutAndReverse = (event, id) => {
-    const editIcon = event.target.nextSibling.firstChild
-    if (event.target.style.textDecoration === 'line-through') {
-        event.target.style.textDecoration = 'none'
+const strikeOutAndReverse = (editIcon, textNode) => {
+    if (textNode.style.textDecoration === 'line-through') {
+        textNode.style.textDecoration = 'none'
         editIcon.style.display = 'inline-block'
-    } else {
-        event.target.style.textDecoration = 'line-through'
-        editIcon.style.display = 'none'
-    }
 
-    todos = todos.map(todo => {
-        if (id === todo.id) {
-            return {
-                ...todo,
-                isDone: !todo.isDone,
-            }
-        }
-        return todo
+        return
+    }
+        textNode.style.textDecoration = 'line-through'
+        editIcon.style.display = 'none'
+}
+
+const deleteItem = (trashIcon, id, parentDiv) => {
+    trashIcon.addEventListener('click', () => {
+        parentDiv.remove()
+        todos = todos.filter(element => element.getId() !== id)
     })
 }
 
-const createSpanBtns = id => {
-    const span = document.createElement('span')
-    const trashIcon = document.createElement('i')
-    const pencilIcon = document.createElement('i')
-
-    trashIcon.classList.add("fa-solid", "fa-trash-can")
-    pencilIcon.classList.add("fa-solid", "fa-pencil")
-
-    trashIcon.addEventListener('click', event => {
-        event.target.parentNode.parentNode.remove()
-        todos = todos.filter(element => element.id !== id)
-        console.log(todos)
-    })
-    pencilIcon.addEventListener('click', event => {
-        const currentDiv = event.target.parentNode.parentNode
-        const currentListItem = event.target.parentNode.previousSibling
-
-        currentDiv.classList.remove('list-item')
+const editItem = (pencilIcon, id, parentDiv, currentListItem, span) => {
+    pencilIcon.addEventListener('click', () => {
+        parentDiv.classList.remove('list-item')
         currentListItem.classList.remove('list-item__li-tag')
-        currentDiv.classList.add('edited-list-item')
+        parentDiv.classList.add('edited-list-item')
         currentListItem.classList.add('edited-list-item__li-tag')
 
         span.style.display = 'none'
-        editListItem(event, id)
+        changeListItem(id, parentDiv, currentListItem, span)
     })
-    span.append(pencilIcon, trashIcon)
-    return span
 }
 
-const editListItem = (event, id) => {
-    const li = event.target.parentNode.previousSibling
-    const div = li.parentNode
+const changeListItem = (id, parentDiv, li, span) => {
     const editionInput = document.createElement('input')
-    const span = event.target.parentNode
 
     li.textContent = ''
     editionInput.classList.add('edition-input')
@@ -104,56 +57,67 @@ const editListItem = (event, id) => {
     editionInput.addEventListener('change', editionEvent => {
         li.textContent = editionEvent.target.value
         todos = todos.map(todo => {
-            if (id === todo.id) {
-                todo.text = li.textContent
+            if (id === todo.getId()) {
+                todo.setText(li.textContent)
+
                 return todo
             }
+
             return todo
         })
-        div.classList.remove('edited-list-item')
+        parentDiv.classList.remove('edited-list-item')
         li.classList.remove('edited-list-item__li-tag')
-        div.classList.add('list-item')
+        parentDiv.classList.add('list-item')
         li.classList.add('list-item__li-tag')
         span.style.display = 'block'
     })
 }
 
+const checkList = () => {
+    const currentNodeList = todos.map(todo => todo.getRef())
+    const finishedTasksIds = todos
+        .filter(todo => todo.getIsDone())
+        .map(task => task.getRef())
 
-const filterList = event => {
-    const currentNodeList = document.querySelectorAll('.list-item')
-    const finishedTasksList = todos.filter(todo => todo.isDone)
-    const finishedId = finishedTasksList.map(task => task.id)
-    console.log(finishedId)
-    console.log(finishedTasksList)
-    console.log(currentNodeList)
-
-    if (event.target.id === 'todo') {
-        currentNodeList.forEach(div => {
-            if (finishedId.includes(div.getAttribute('todo-id'))) {
-                div.style.display = 'none'
-            } else {
-                div.style.display = 'flex'
-            }
-        })
-    }
-    if (event.target.id === 'strokes') {
-        currentNodeList.forEach(div => {
-            if (!finishedId.includes(div.getAttribute('todo-id'))) {
-                div.style.display = 'none'
-            } else {
-                div.style.display = 'flex'
-            }
-        })
-    }
-    if (event.target.id === 'all') {
-        currentNodeList.forEach(div => div.style.display = 'flex')
+    return { 
+        currentNodeList,
+        finishedTasksIds 
     }
 }
 
+const onShowAllTodos = () => {
+    const { currentNodeList } = checkList()
+
+    currentNodeList.forEach(div => div.style.display = 'flex')
+}
+
+const onShowDoneTodos = () => {
+    const { currentNodeList, finishedTasksIds } = checkList()
+
+    currentNodeList.forEach(div => {
+        if (finishedTasksIds.includes(div)) {
+            div.style.display = 'none'
+            
+            return
+        }
+        div.style.display = 'flex'
+    })
+}
+
+const onShowStrokesTodos = () => {
+    const { currentNodeList, finishedTasksIds } = checkList()
+
+    currentNodeList.forEach(div => {
+        if (!finishedTasksIds.includes(div)) {
+            div.style.display = 'none'
+
+            return
+        }
+        div.style.display = 'flex'
+    })
+}
+
 addTaskButton.addEventListener('click', createTask)
-
-radioBtns.forEach(btn => {
-    btn.addEventListener('change', event => filterList(event))
-})
-
-
+radioAll.addEventListener('change', onShowAllTodos)
+radioTodo.addEventListener('change', onShowDoneTodos)
+radioStrokes.addEventListener('change', onShowStrokesTodos)

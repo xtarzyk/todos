@@ -74,12 +74,16 @@ const changeListItem = (id, parentDiv, li, span) => {
 }
 
 const checkList = () => {
-    const currentNodeList = document.querySelectorAll('.list-item')
+    const currentNodeList = todos.map(todo => todo.getRef())
     const finishedTasksIds = todos
         .filter(todo => todo.getIsDone())
         .map(task => task.getRef())
+    console.log("🚀 ~ file: main.js ~ line 81 ~ checkList ~ finishedTasksIds", finishedTasksIds)
 
-    return { currentNodeList, finishedTasksIds }
+    return { 
+        currentNodeList,
+        finishedTasksIds 
+    }
 }
 
 const onShowAllTodos = () => {
@@ -97,7 +101,7 @@ const onShowDoneTodos = () => {
             
             return
         }
-            div.style.display = 'flex'
+        div.style.display = 'flex'
     })
 }
 
@@ -110,7 +114,7 @@ const onShowStrokesTodos = () => {
 
             return
         }
-            div.style.display = 'flex'
+        div.style.display = 'flex'
     })
 }
 

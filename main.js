@@ -78,7 +78,6 @@ const checkList = () => {
     const finishedTasksIds = todos
         .filter(todo => todo.getIsDone())
         .map(task => task.getRef())
-    console.log("🚀 ~ file: main.js ~ line 81 ~ checkList ~ finishedTasksIds", finishedTasksIds)
 
     return { 
         currentNodeList,

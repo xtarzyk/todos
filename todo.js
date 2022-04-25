@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 export class Todo {
     #id
+    #ref
     #isDone
     #text
     #editIcon
@@ -14,6 +15,10 @@ export class Todo {
 
     getId() {
         return this.#id
+    }
+
+    getRef() {
+        return this.#ref
     }
 
     getIsDone() {
@@ -39,6 +44,8 @@ export class Todo {
         newListItem.textContent = this.#text
         newDiv.append(newListItem)
         newDiv.append(newSpan)
+
+        this.#ref = newDiv
 
         return newDiv
     }

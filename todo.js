@@ -34,50 +34,37 @@ export class Todo {
     }
 
     render(onClick, deleteItem, editItem) {
-        const newDiv = document.createElement('div')
-        const newListItem = this.#createNewListItem(onClick)
-        const newSpan = this.#createSpanBtns(deleteItem, editItem, newDiv, newListItem)
+        const $newDiv = $('<div>').addClass('list-item').attr('todo-id', this.#id)
+        const $newListItem = $(this.#createNewListItem(onClick)).addClass('list-item__li-tag').text(this.#text)
+        const newSpan = this.#createSpanBtns(deleteItem, editItem, $newDiv, $newListItem)
 
-        newDiv.classList.add('list-item')
-        newDiv.setAttribute('todo-id', this.#id)
-        newListItem.classList.add('list-item__li-tag')
-        newListItem.textContent = this.#text
-        newDiv.append(newListItem)
-        newDiv.append(newSpan)
+        $newDiv.append($newListItem, newSpan)
+        this.#ref = $newDiv
 
-        this.#ref = newDiv
-
-        return newDiv
+        return $newDiv
     }
 
     #createNewListItem(onClick) {
-        const newListItem = document.createElement('li')
-
-        newListItem.addEventListener('click', () => {
-            if (newListItem.textContent !== '') {
-                onClick(this.#editIcon, newListItem)
+        const $newListItem = $('<li>').click(() => {
+            if ($newListItem.text() !== '') {
+                onClick(this.#editIcon, $newListItem)
                 this.toggleIsDone()
             }
         })
 
-        return newListItem
+        return $newListItem
     }
 
-    #createSpanBtns(deleteItem, editItem, parentDiv, currentListItem) {
-        const span = document.createElement('span')
-        const trashIcon = document.createElement('i')
-        const pencilIcon = document.createElement('i')
+    #createSpanBtns(deleteItem, editItem, $parentDiv, $currentListItem) {
+        const $span = $('<span>').addClass('span-btns')
+        const $trashIcon = $('<img>').addClass('trash').attr('background', "url('icons/trash.png')")
+        const $pencilIcon = $('<img>').addClass('pencil').attr('background', "url('icons/pencil.png')")
     
-        trashIcon.classList.add('fa-solid', 'fa-trash-can')
-        pencilIcon.classList.add('fa-solid', 'fa-pencil')
+        $span.append($pencilIcon, $trashIcon)
+        deleteItem($trashIcon, this.#id, $parentDiv)
+        editItem($pencilIcon, this.#id, $parentDiv, $currentListItem, $span)
+        this.#editIcon = $pencilIcon
     
-        deleteItem(trashIcon, this.#id, parentDiv)
-    
-        editItem(pencilIcon, this.#id, parentDiv, currentListItem, span)
-    
-        span.append(pencilIcon, trashIcon)
-        this.#editIcon = pencilIcon
-    
-        return span
+        return $span
     }
 }

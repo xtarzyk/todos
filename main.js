@@ -1,75 +1,67 @@
 import { Todo } from './todo'
 
-const addTaskButton = document.querySelector('.header__button')
-const taskName = document.querySelector('.header__input')
-const mainList = document.querySelector('.main__list')
-const radioAll =  document.getElementById('all')
-const radioTodo =  document.getElementById('todo')
-const radioStrokes =  document.getElementById('strokes')
 let todos = []
 
 const createTask = () => {
-    const todo = new Todo(taskName.value)
+    const todo = new Todo($('.header__input').val())
     const newTodo = todo.render(strikeOutAndReverse, deleteItem, editItem)
 
     todos = todos.concat(todo)
-    mainList.append(newTodo)
-    taskName.value = ''
+    $('.main__list').append(newTodo)
+    $('.header__input').val('')
 }
 
-const strikeOutAndReverse = (editIcon, textNode) => {
-    if (textNode.style.textDecoration === 'line-through') {
-        textNode.style.textDecoration = 'none'
-        editIcon.style.display = 'inline-block'
+const strikeOutAndReverse = ($editIcon, $textNode) => {
+    if ($textNode.css('textDecoration').match('line-through')) {
+        $textNode.css('textDecoration', 'none')
+        $editIcon.css('display', 'inline-block')
 
         return
     }
-        textNode.style.textDecoration = 'line-through'
-        editIcon.style.display = 'none'
+    $textNode.css('textDecoration', 'line-through')
+    $editIcon.css('display', 'none')
 }
 
-const deleteItem = (trashIcon, id, parentDiv) => {
-    trashIcon.addEventListener('click', () => {
-        parentDiv.remove()
+const deleteItem = ($trashIcon, id, $parentDiv) => {
+    $trashIcon.click(() => {
+        $parentDiv.remove()
         todos = todos.filter(element => element.getId() !== id)
     })
 }
 
-const editItem = (pencilIcon, id, parentDiv, currentListItem, span) => {
-    pencilIcon.addEventListener('click', () => {
-        parentDiv.classList.remove('list-item')
-        currentListItem.classList.remove('list-item__li-tag')
-        parentDiv.classList.add('edited-list-item')
-        currentListItem.classList.add('edited-list-item__li-tag')
+const editItem = ($pencilIcon, id, $parentDiv, $currentListItem, $span) => {
+    $pencilIcon.click(() => {
+        $parentDiv.removeClass('list-item')
+        $currentListItem.removeClass('list-item__li-tag')
+        $parentDiv.addClass('edited-list-item')
+        $currentListItem.addClass('edited-list-item__li-tag')
 
-        span.style.display = 'none'
-        changeListItem(id, parentDiv, currentListItem, span)
+        $span.css('display', 'none')
+        changeListItem(id, $parentDiv, $currentListItem, $span)
     })
 }
 
-const changeListItem = (id, parentDiv, li, span) => {
-    const editionInput = document.createElement('input')
+const changeListItem = (id, $parentDiv, $li, $span) => {
+    const $editionInput = $('<input>').addClass('edition-input')
 
-    li.textContent = ''
-    editionInput.classList.add('edition-input')
-    li.appendChild(editionInput)
+    $li.text('').append($editionInput)
 
-    editionInput.addEventListener('change', editionEvent => {
-        li.textContent = editionEvent.target.value
+    $editionInput.change(editionEvent => {
+        $li.text(editionEvent.target.value) 
         todos = todos.map(todo => {
             if (id === todo.getId()) {
-                todo.setText(li.textContent)
+                todo.setText($li.text())
 
                 return todo
             }
 
             return todo
         })
-        parentDiv.classList.remove('edited-list-item')
-        li.classList.remove('edited-list-item__li-tag')
-        parentDiv.classList.add('list-item')
-        li.classList.add('list-item__li-tag')
-        span.style.display = 'block'
+        $parentDiv.removeClass('edited-list-item')
+        $li.removeClass('edited-list-item__li-tag')
+        $parentDiv.addClass('list-item')
+        $li.addClass('list-item__li-tag')
+        $span.css('display', 'block')
     })
 }
 
@@ -88,36 +80,36 @@ const checkList = () => {
 const onShowAllTodos = () => {
     const { currentNodeList } = checkList()
 
-    currentNodeList.forEach(div => div.style.display = 'flex')
+    currentNodeList.forEach($div => $div.css('display', 'flex'))
 }
 
 const onShowDoneTodos = () => {
     const { currentNodeList, finishedTasksIds } = checkList()
 
-    currentNodeList.forEach(div => {
-        if (finishedTasksIds.includes(div)) {
-            div.style.display = 'none'
+    currentNodeList.forEach($div => {
+        if (finishedTasksIds.includes($div)) {
+            $div.css('display', 'none')
             
             return
         }
-        div.style.display = 'flex'
+        $div.css('display', 'flex')
     })
 }
 
 const onShowStrokesTodos = () => {
     const { currentNodeList, finishedTasksIds } = checkList()
 
-    currentNodeList.forEach(div => {
-        if (!finishedTasksIds.includes(div)) {
-            div.style.display = 'none'
+    currentNodeList.forEach($div => {
+        if (!finishedTasksIds.includes($div)) {
+            $div.css('display', 'none')
 
             return
         }
-        div.style.display = 'flex'
+        $div.css('display', 'flex')
     })
 }
 
-addTaskButton.addEventListener('click', createTask)
-radioAll.addEventListener('change', onShowAllTodos)
-radioTodo.addEventListener('change', onShowDoneTodos)
-radioStrokes.addEventListener('change', onShowStrokesTodos)
+$('.header__button').click(createTask)
+$('#all').click(onShowAllTodos)
+$('#todo').click(onShowDoneTodos)
+$('#strokes').click(onShowStrokesTodos)

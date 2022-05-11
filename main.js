@@ -113,3 +113,8 @@ $('.header__button').click(createTask)
 $('#all').click(onShowAllTodos)
 $('#todo').click(onShowDoneTodos)
 $('#strokes').click(onShowStrokesTodos)
+
+export {
+    todos,
+    createTask
+}

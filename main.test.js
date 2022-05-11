@@ -37,20 +37,14 @@ const body = `
         </div>
         </div>`
         
-        // console.log(dom.window.document.querySelector('.main__title').textContent)
-        
         describe('todo app', () => {
+
             beforeEach(() => $('body').append(body))
+
             afterEach(() => {
                 $('body').empty()
                 todos.length = 0
-                // console.log(document.querySelector('body').childNodes.length)
             })
-            
-            test('should create task', () => {
-                expect(true).toBe(true)
-            })
-            
             
             describe('createTask', () => {
                 test('should value passed and create newTodo', () => {
@@ -64,10 +58,6 @@ const body = `
                     expect($liTag.text()).toMatch(inputValue)
                     expect($('.main__list').has().children()).toBeTruthy()
                     expect(todos.length).toBe(1)
-
-                })
-                
-                test('should empty input', () => {
                     expect($('.header__input').val()).toBe('')
                 })
             })
@@ -126,7 +116,6 @@ const body = `
                     
                     $('.header__input').val(inputValue)
                     createTask()
-                    createTask()
                     
                     const $liTag = $('.list-item__li-tag')
                     
@@ -141,8 +130,6 @@ const body = `
                     
                     $('.header__input').val(inputValue)
                     createTask()
-                    createTask()
-                    
                     
                     const $liTag = $('.list-item__li-tag')
     

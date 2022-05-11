@@ -114,8 +114,6 @@ $('#all').click(onShowAllTodos)
 $('#todo').click(onShowDoneTodos)
 $('#strokes').click(onShowStrokesTodos)
 
-// module.exports = main
-
 export {
     todos,
     createTask
